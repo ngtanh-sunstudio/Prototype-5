@@ -6,6 +6,8 @@ TagManager:
   tags:
   - DestroyZone
   - Bad
+  - Sensor
+  - Blade
   layers:
   - Default
   - TransparentFX

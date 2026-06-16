@@ -1,31 +1,26 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DifficultyButton : MonoBehaviour
 {
-    private Button button;
-    private GameManager gameManager;
+    public static event Action<int> DifficultySelected; // Event receives an int param
+    [SerializeField] private Button button;
 
-    [Min(1)] public int difficulty;
+    [Min(1)] [SerializeField] private int difficulty;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        button = GetComponent<Button>();
-        button.onClick.AddListener(SetDifficulty);
-
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        button.onClick.AddListener(OnButtonClicked);
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDestroy()
     {
-        
+        button.onClick.RemoveListener(OnButtonClicked);
     }
 
-    private void SetDifficulty()
+    private void OnButtonClicked() // Only this class can trigger this
     {
-        Debug.Log(gameObject.name + " was pressed");
-        gameManager.StartGame(difficulty);
+        DifficultySelected?.Invoke(difficulty); // Invokes the event, passing the param difficulty
     }
 }
